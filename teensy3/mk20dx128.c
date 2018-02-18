@@ -1150,11 +1150,10 @@ char *__brkval = (char *)&_ebss;
 
 void * _sbrk(int incr)
 {
-	char *prev, *stack;
+        char *prev, *stack = (char*)(&_estack);
 
 	prev = __brkval;
 	if (incr != 0) {
-		__asm__ volatile("mov %0, sp" : "=r" (stack) ::);
 		if (prev + incr >= stack - STACK_MARGIN) {
 			errno = ENOMEM;
 			return (void *)-1;
